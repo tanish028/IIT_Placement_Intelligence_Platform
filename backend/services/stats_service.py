@@ -191,7 +191,7 @@ def get_growth_rates(year_from: int, year_to: int):
             WHERE Year = %s
             GROUP BY Institute
         ) a
-        JOIN (
+        INNER JOIN (
             SELECT Institute, AVG(AvgPackage_LPA) AS avg_pkg
             FROM placements
             WHERE Year = %s

@@ -87,6 +87,9 @@ export default function Trends() {
           <button onClick={handleGrowth} className="px-5 py-2 rounded-lg text-sm font-medium"
             style={{ backgroundColor: '#60A5FA', color: '#111827' }}>Compare Growth</button>
         </div>
+        {growthData.length === 0 && !loading && (
+          <p className="text-gray-500 text-sm mt-2">No data available for this year range. Try a range where both years have data (e.g. 2021 – 2024).</p>
+        )}
         {growthData.length > 0 && (
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={growthData}>
