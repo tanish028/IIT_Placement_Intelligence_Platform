@@ -16,7 +16,10 @@ app = FastAPI(
 # In production, replace "*" with your deployed Vercel URL.
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "http://localhost:5173",
+        "https://iit-placement-intelligence-platform.vercel.app",
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
 )
