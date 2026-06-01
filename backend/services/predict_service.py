@@ -36,21 +36,21 @@ def _get_historical_range(branch: str) -> dict:
 
     cursor.execute("""
         SELECT
-            ROUND(AVG(yearly_min), 2) AS range_min,
-            ROUND(AVG(yearly_max), 2) AS range_max
+            ROUND(AVG(yearly_min)::numeric, 2) AS range_min,
+            ROUND(AVG(yearly_max)::numeric, 2) AS range_max
         FROM (
             SELECT
-                Year,
-                MIN(AvgPackage_LPA) AS yearly_min,
-                MAX(AvgPackage_LPA) AS yearly_max
+                "Year",
+                MIN("AvgPackage_LPA") AS yearly_min,
+                MAX("AvgPackage_LPA") AS yearly_max
             FROM placements
-            WHERE Branch = %s
-              AND AvgPackage_LPA IS NOT NULL
-            GROUP BY Year
+            WHERE "Branch" = %s
+              AND "AvgPackage_LPA" IS NOT NULL
+            GROUP BY "Year"
         ) yearly_stats
     """, (branch,))
 
-    row = cursor.fetchone()
+    row = dict(cursor.fetchone())
     conn.close()
 
     return {
@@ -66,21 +66,21 @@ def _get_historical_placement_range(branch: str) -> dict:
 
     cursor.execute("""
         SELECT
-            ROUND(AVG(yearly_min), 2) AS range_min,
-            ROUND(AVG(yearly_max), 2) AS range_max
+            ROUND(AVG(yearly_min)::numeric, 2) AS range_min,
+            ROUND(AVG(yearly_max)::numeric, 2) AS range_max
         FROM (
             SELECT
-                Year,
-                MIN(Placement_Percentage) AS yearly_min,
-                MAX(Placement_Percentage) AS yearly_max
+                "Year",
+                MIN("Placement_Percentage") AS yearly_min,
+                MAX("Placement_Percentage") AS yearly_max
             FROM placements
-            WHERE Branch = %s
-              AND Placement_Percentage IS NOT NULL
-            GROUP BY Year
+            WHERE "Branch" = %s
+              AND "Placement_Percentage" IS NOT NULL
+            GROUP BY "Year"
         ) yearly_stats
     """, (branch,))
 
-    row = cursor.fetchone()
+    row = dict(cursor.fetchone())
     conn.close()
 
     return {

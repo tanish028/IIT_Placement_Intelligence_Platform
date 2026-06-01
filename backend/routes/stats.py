@@ -47,7 +47,7 @@ def trends(
     branch: str = Query(default="Overall")
 ):
     """Year-over-year trend for avg package and placement %."""
-    return svc.get_trends(institute, branch)
+    return svc.get_trends(institute)
 
 
 @router.get("/best-iits")

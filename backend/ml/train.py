@@ -17,7 +17,8 @@ import pandas as pd
 import numpy as np
 import joblib
 import os
-import mysql.connector
+import psycopg2
+import psycopg2.extras
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
@@ -28,20 +29,24 @@ load_dotenv()
 
 # ── 1. Load data from MySQL ───────────────────────────────────────
 
-conn = mysql.connector.connect(
-    host=os.getenv("DB_HOST", "localhost"),
-    user=os.getenv("DB_USER", "root"),
-    password=os.getenv("DB_PASSWORD", ""),
-    database=os.getenv("DB_NAME", "iit_placements_db")
+conn = psycopg2.connect(
+    host=os.getenv("DB_HOST"),
+    port=os.getenv("DB_PORT", "5432"),
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    dbname=os.getenv("DB_NAME"),
 )
 
 df = pd.read_sql("""
-    SELECT Institute, Program, Year, Branch,
-           AvgPackage_LPA, Placement_Percentage
+    SELECT "Institute", "Program", "Year", "Branch",
+           "AvgPackage_LPA", "Placement_Percentage"
     FROM placements
-    WHERE AvgPackage_LPA IS NOT NULL
-      AND Placement_Percentage IS NOT NULL
+    WHERE "AvgPackage_LPA" IS NOT NULL
+      AND "Placement_Percentage" IS NOT NULL
 """, conn)
+
+# Rename to simple column names for easier handling
+df.columns = ['Institute', 'Program', 'Year', 'Branch', 'AvgPackage_LPA', 'Placement_Percentage']
 conn.close()
 
 print(f"Loaded {len(df)} rows from placements table.")
