@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+*.pkl
+*.egg-info/
+
+# Environment
+.env
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Database
+*.sql
+
+# OS
+.DS_Store
+Thumbs.db
