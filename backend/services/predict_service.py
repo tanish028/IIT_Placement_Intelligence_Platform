@@ -32,7 +32,7 @@ def _get_historical_range(branch: str) -> dict:
     "Historically, CSE packages across IITs have ranged from X to Y LPA."
     """
     conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor()
 
     cursor.execute("""
         SELECT
@@ -62,7 +62,7 @@ def _get_historical_range(branch: str) -> dict:
 def _get_historical_placement_range(branch: str) -> dict:
     """Same logic for placement percentage range."""
     conn = get_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor()
 
     cursor.execute("""
         SELECT
