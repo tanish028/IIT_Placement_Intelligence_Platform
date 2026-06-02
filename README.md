@@ -6,8 +6,8 @@ A full-stack data analytics and machine learning platform that centralizes IIT p
 
 ## Live Demo
 
-> Frontend: *(coming soon — Vercel)*
-> Backend API: *(coming soon — Render)*
+> Frontend: https://iit-placement-intelligence-platform.vercel.app
+> Backend API: https://iit-placement-intelligence-platform.onrender.com/docs
 
 ---
 
@@ -36,7 +36,7 @@ This platform solves that by centralizing placement data and providing analytics
 |------------|-----------------------------------|
 | Frontend   | React, Tailwind CSS, Recharts     |
 | Backend    | FastAPI (Python)                  |
-| Database   | MySQL                             |
+| Database   | PostgreSQL (Neon)                 |
 | ML Models  | scikit-learn RandomForestRegressor |
 | Deployment | Vercel (frontend), Render (backend) |
 
@@ -49,7 +49,7 @@ IIT_Placement_Intelligence_Platform/
 │
 ├── backend/
 │   ├── main.py               # FastAPI app entry point
-│   ├── database.py           # MySQL connection
+│   ├── database.py           # PostgreSQL connection (psycopg2)
 │   ├── schemas.py            # Pydantic request/response models
 │   ├── routes/
 │   │   ├── stats.py          # Analytics endpoints
@@ -124,9 +124,9 @@ Full interactive docs available at `/docs` when running locally.
 ## Local Setup
 
 ### Prerequisites
-- Python 3.10+
+- Python 3.11+
 - Node.js 18+
-- MySQL 8.0
+- PostgreSQL (or a free Neon account)
 
 ### Backend
 
