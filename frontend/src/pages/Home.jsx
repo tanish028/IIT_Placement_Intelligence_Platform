@@ -3,7 +3,7 @@ import { getSummary, getFilters, getComparison } from '../api/api'
 import AnimatedNumber from '../components/AnimatedNumber'
 import IITCard from '../components/IITCard'
 import Spinner from '../components/Spinner'
-import { TrendingUp, BookOpen, Cpu, ArrowRight, Zap } from 'lucide-react'
+import { TrendingUp, BookOpen, Cpu, ArrowRight, Zap, Scale, Sparkles } from 'lucide-react'
 
 // ── Scroll fade-in hook ───────────────────────────────────────────
 function useFadeIn() {
@@ -255,6 +255,3 @@ export default function Home() {
   )
 }
 
-// Needed imports referenced in JSX above
-function Scale(props)    { return <svg xmlns="http://www.w3.org/2000/svg" width={props.size} height={props.size} fill="none" viewBox="0 0 24 24" stroke={props.color} strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M3 6l9-3 9 3M3 6v12l9 3 9-3V6M12 3v18"/></svg> }
-function Sparkles(props) { return <svg xmlns="http://www.w3.org/2000/svg" width={props.size} height={props.size} fill="none" viewBox="0 0 24 24" stroke={props.color} strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 3l1.5 4.5L11 9l-4.5 1.5L5 15l-1.5-4.5L-1 9l4.5-1.5L5 3zM19 14l1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3z"/></svg> }
