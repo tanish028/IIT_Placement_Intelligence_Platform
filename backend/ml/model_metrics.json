@@ -1,0 +1,36 @@
+{
+  "package_model": {
+    "cv_r2_mean": 0.1068,
+    "cv_r2_std": 0.2022,
+    "cv_mae_mean": 4.89,
+    "cv_mae_std": 0.38,
+    "test_r2": 0.673,
+    "test_mae": 2.43,
+    "test_rmse": 3.3,
+    "baseline_mae": 4.59,
+    "improvement_pct": 47.1,
+    "feature_importance": {
+      "Institute": 0.232,
+      "Branch": 0.6093,
+      "Program": 0.0684,
+      "Year": 0.0904
+    }
+  },
+  "placement_model": {
+    "cv_r2_mean": 0.2677,
+    "cv_r2_std": 0.1874,
+    "cv_mae_mean": 9.49,
+    "cv_mae_std": 1.57,
+    "test_r2": 0.5479,
+    "test_mae": 7.35,
+    "test_rmse": 9.7,
+    "baseline_mae": 10.7,
+    "improvement_pct": 31.3,
+    "feature_importance": {
+      "Institute": 0.3317,
+      "Branch": 0.5249,
+      "Program": 0.024,
+      "Year": 0.1194
+    }
+  }
+}
