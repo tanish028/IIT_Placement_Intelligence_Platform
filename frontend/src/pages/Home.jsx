@@ -3,7 +3,7 @@ import { getSummary, getFilters, getComparison } from '../api/api'
 import AnimatedNumber from '../components/AnimatedNumber'
 import IITCard from '../components/IITCard'
 import Spinner from '../components/Spinner'
-import { TrendingUp, BookOpen, Cpu, ArrowRight, Zap, Scale, Sparkles } from 'lucide-react'
+import { TrendingUp, BookOpen, Cpu, ArrowRight, Zap, Scale, Sparkles } from '../components/icons'
 
 // ── Scroll fade-in hook ───────────────────────────────────────────
 function useFadeIn() {

@@ -1,7 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import {
-  LayoutDashboard, Scale, GitBranch, PieChart, TrendingUp, Sparkles
-} from 'lucide-react'
+import { LayoutDashboard, Scale, GitBranch, PieChart, TrendingUp, Sparkles } from './icons'
 
 const links = [
   { to: '/',         label: 'Dashboard',       icon: LayoutDashboard },

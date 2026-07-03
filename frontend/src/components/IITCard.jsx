@@ -1,4 +1,4 @@
-import { TrendingUp, Users, Award, ArrowRight } from 'lucide-react'
+import { TrendingUp, Users, Award, ArrowRight } from './icons'
 import { useNavigate } from 'react-router-dom'
 
 // ── Campus images per IIT ────────────────────────────────────────
