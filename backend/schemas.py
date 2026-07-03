@@ -1,19 +1,15 @@
 from pydantic import BaseModel
 from typing import Optional
 
-# ── Request Models ──────────────────────────────────────────────
-
 class PredictRequest(BaseModel):
     institute: str
     branch: str
     program: str
     year: int
 
-# ── Response Models ─────────────────────────────────────────────
-
 class SummaryResponse(BaseModel):
     total_institutes: int
-    years_covered: str          # e.g. "2021 – 2025"
+    years_covered: str
     avg_package_lpa: float
     avg_placement_pct: float
 
@@ -39,7 +35,10 @@ class SectorRow(BaseModel):
 
 class PredictResponse(BaseModel):
     predicted_avg_package_lpa: float
-    package_range_lpa: dict      # {"min": float, "max": float} from individual trees
+    package_range_lpa: dict         # {"min", "max", "std"} — tree-based 95% CI
     predicted_placement_pct: float
-    placement_range_pct: dict    # {"min": float, "max": float} from individual trees
-    factors_used: dict           # echoes the input back to the UI
+    placement_range_pct: dict       # {"min", "max", "std"} — tree-based 95% CI
+    factors_used: dict              # echoes input for UI checklist
+    shap_package: dict              # SHAP contributions per feature for package model
+    shap_placement: dict            # SHAP contributions per feature for placement model
+    model_info: dict                # CV scores, baseline MAE, improvement %
