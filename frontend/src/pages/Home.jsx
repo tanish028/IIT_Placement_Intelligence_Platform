@@ -29,7 +29,6 @@ export default function Home() {
   const [summary,    setSummary]    = useState(null)
   const [iitData,    setIITData]    = useState([])
   const [loading,    setLoading]    = useState(true)
-  const [error,      setError]      = useState(null)
 
   const heroRef    = useRef(null)
   const statsRef   = useFadeIn()
@@ -37,16 +36,23 @@ export default function Home() {
   const featureRef = useFadeIn()
 
   useEffect(() => {
-    Promise.all([getSummary(), getFilters()])
-      .then(async ([sumRes, filterRes]) => {
-        setSummary(sumRes.data)
-        const iits = filterRes.data.institutes || []
+    // Load summary stats
+    getSummary()
+      .then(res => setSummary(res.data))
+      .catch(() => {}) // show zeros if summary fails
+
+    // Load IIT cards separately — failure here won't break the whole page
+    getFilters()
+      .then(async res => {
+        const iits = res.data.institutes || []
         if (iits.length > 0) {
-          const compRes = await getComparison(iits)
-          setIITData(compRes.data || [])
+          try {
+            const compRes = await getComparison(iits)
+            setIITData(compRes.data || [])
+          } catch (_) {}
         }
       })
-      .catch(() => setError('Failed to load data.'))
+      .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
 
@@ -63,7 +69,6 @@ export default function Home() {
   }, [])
 
   if (loading) return <Spinner />
-  if (error)   return <p className="text-red-400">{error}</p>
 
   return (
     <div className="page-enter -m-8">
