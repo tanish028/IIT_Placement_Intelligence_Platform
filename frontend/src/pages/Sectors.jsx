@@ -6,7 +6,7 @@ import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recha
 
 const COLORS = ['#F59E0B', '#60A5FA', '#34D399', '#F87171', '#A78BFA', '#FB923C']
 
-const tooltip = {
+const ttStyle = {
   contentStyle: { backgroundColor: 'var(--tooltip-bg)', border: '1px solid var(--border)', color: 'var(--text-1)', borderRadius: 10 },
   labelStyle: { color: 'var(--text-2)' },
 }
@@ -38,13 +38,12 @@ export default function Sectors() {
   return (
     <div>
       <PageHeader
-        badge="🏭 Sector Breakdown"
+        badge="Sector Breakdown"
         title="Sector Analytics"
         subtitle="Hiring distribution by industry sector"
         accent="#A78BFA"
       />
 
-      {/* Controls */}
       <div className="theme-card p-5 mb-6">
         <div className="flex flex-wrap gap-3">
           <select value={institute} onChange={e => setInstitute(e.target.value)} className="theme-select">
@@ -67,7 +66,6 @@ export default function Sectors() {
 
       {data.length > 0 && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Pie chart */}
           <div className="theme-card p-5">
             <p className="font-semibold mb-4" style={{ color: 'var(--text-1)' }}>Students Placed by Sector</p>
             <ResponsiveContainer width="100%" height={300}>
@@ -79,17 +77,16 @@ export default function Sectors() {
                   cx="50%"
                   cy="50%"
                   outerRadius={110}
-                  label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, percent }) => name + ' ' + (percent * 100).toFixed(0) + '%'}
                 >
                   {pieData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
                 </Pie>
-                <Tooltip {...tooltip} />
+                <Tooltip {...ttStyle} />
                 <Legend />
               </PieChart>
             </ResponsiveContainer>
           </div>
 
-          {/* Table */}
           <div className="theme-card overflow-hidden self-start">
             <table className="w-full text-sm theme-table">
               <thead>
@@ -103,4 +100,21 @@ export default function Sectors() {
                 {data.map((r, i) => (
                   <tr key={i}>
                     <td className="px-4 py-3 font-semibold" style={{ color: COLORS[i % COLORS.length] }}>
-                      <span className="inline-block w-2 h-2 rounded-full mr-2" style={{ backgroundColor: COLO
+                      <span
+                        className="inline-block w-2 h-2 rounded-full mr-2"
+                        style={{ backgroundColor: COLORS[i % COLORS.length] }}
+                      />
+                      {r.sector}
+                    </td>
+                    <td className="px-4 py-3 text-center">{r.students_placed}</td>
+                    <td className="px-4 py-3 text-center font-semibold" style={{ color: '#60A5FA' }}>{r.placement_percentage ?? '—'}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}

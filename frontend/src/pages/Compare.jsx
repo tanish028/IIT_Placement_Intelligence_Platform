@@ -4,7 +4,7 @@ import Spinner from '../components/Spinner'
 import PageHeader from '../components/PageHeader'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 
-const tooltip = {
+const ttStyle = {
   contentStyle: { backgroundColor: 'var(--tooltip-bg)', border: '1px solid var(--border)', color: 'var(--text-1)', borderRadius: 10 },
   labelStyle: { color: 'var(--text-2)' },
 }
@@ -37,12 +37,11 @@ export default function Compare() {
   return (
     <div>
       <PageHeader
-        badge="⚖️ Side-by-Side"
+        badge="Compare IITs"
         title="IIT Comparison"
         subtitle="Compare placement stats across multiple IITs for any year"
       />
 
-      {/* Filter card */}
       <div className="theme-card p-5 mb-6">
         <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: 'var(--text-2)' }}>
           Select IITs to compare
@@ -63,11 +62,7 @@ export default function Compare() {
           ))}
         </div>
         <div className="flex items-center gap-4">
-          <select
-            value={year}
-            onChange={e => setYear(e.target.value)}
-            className="theme-select"
-          >
+          <select value={year} onChange={e => setYear(e.target.value)} className="theme-select">
             {filters.years.map(y => <option key={y}>{y}</option>)}
           </select>
           <button
@@ -84,7 +79,6 @@ export default function Compare() {
 
       {results.length > 0 && (
         <div className="space-y-6">
-          {/* Avg Package Chart */}
           <div className="theme-card p-5">
             <p className="font-semibold mb-4" style={{ color: 'var(--text-1)' }}>Average Package (LPA)</p>
             <ResponsiveContainer width="100%" height={300}>
@@ -92,13 +86,12 @@ export default function Compare() {
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" />
                 <XAxis dataKey="institute" tick={{ fill: 'var(--chart-text)', fontSize: 11 }} />
                 <YAxis tick={{ fill: 'var(--chart-text)' }} />
-                <Tooltip {...tooltip} />
+                <Tooltip {...ttStyle} />
                 <Bar dataKey="avg_package_lpa" fill="#F59E0B" name="Avg Package (LPA)" radius={[6,6,0,0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          {/* Placement % Chart */}
           <div className="theme-card p-5">
             <p className="font-semibold mb-4" style={{ color: 'var(--text-1)' }}>Placement Percentage</p>
             <ResponsiveContainer width="100%" height={300}>
@@ -106,13 +99,12 @@ export default function Compare() {
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" />
                 <XAxis dataKey="institute" tick={{ fill: 'var(--chart-text)', fontSize: 11 }} />
                 <YAxis tick={{ fill: 'var(--chart-text)' }} />
-                <Tooltip {...tooltip} />
+                <Tooltip {...ttStyle} />
                 <Bar dataKey="placement_percentage" fill="#60A5FA" name="Placement %" radius={[6,6,0,0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          {/* Table */}
           <div className="theme-card overflow-hidden">
             <table className="w-full text-sm theme-table">
               <thead>
@@ -128,4 +120,17 @@ export default function Compare() {
                 {results.map((r, i) => (
                   <tr key={i}>
                     <td className="px-4 py-3 font-semibold" style={{ color: 'var(--text-1)' }}>{r.institute}</td>
-                    <td className="px-4 py-3 text-center font-bold" style={{ color: '#F59E0B' }}>
+                    <td className="px-4 py-3 text-center font-bold" style={{ color: '#F59E0B' }}>{r.avg_package_lpa ?? '—'} LPA</td>
+                    <td className="px-4 py-3 text-center">{r.median_package_lpa ?? '—'} LPA</td>
+                    <td className="px-4 py-3 text-center">{r.highest_domestic_lpa ?? '—'} LPA</td>
+                    <td className="px-4 py-3 text-center font-semibold" style={{ color: '#60A5FA' }}>{r.placement_percentage ?? '—'}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}

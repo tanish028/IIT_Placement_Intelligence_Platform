@@ -4,7 +4,7 @@ import Spinner from '../components/Spinner'
 import PageHeader from '../components/PageHeader'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 
-const tooltip = {
+const ttStyle = {
   contentStyle: { backgroundColor: 'var(--tooltip-bg)', border: '1px solid var(--border)', color: 'var(--text-1)', borderRadius: 10 },
   labelStyle: { color: 'var(--text-2)' },
 }
@@ -42,13 +42,12 @@ export default function Branches() {
   return (
     <div>
       <PageHeader
-        badge="🌿 Branch Intelligence"
+        badge="Branch Intelligence"
         title="Branch Analytics"
         subtitle="Explore placement stats by branch across IITs"
         accent="#34D399"
       />
 
-      {/* Section 1: Branch-wise stats */}
       <div className="theme-card p-5 mb-6">
         <p className="font-semibold mb-3" style={{ color: 'var(--text-1)' }}>Branch-wise Stats for an IIT</p>
         <div className="flex flex-wrap gap-3 mb-4">
@@ -73,14 +72,13 @@ export default function Branches() {
               <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" />
               <XAxis type="number" tick={{ fill: 'var(--chart-text)' }} />
               <YAxis dataKey="branch" type="category" tick={{ fill: 'var(--chart-text)', fontSize: 11 }} width={100} />
-              <Tooltip {...tooltip} />
+              <Tooltip {...ttStyle} />
               <Bar dataKey="avg_package_lpa" fill="#F59E0B" name="Avg Package (LPA)" radius={[0,6,6,0]} />
             </BarChart>
           </ResponsiveContainer>
         )}
       </div>
 
-      {/* Section 2: Best IITs for a branch */}
       <div className="theme-card p-5">
         <p className="font-semibold mb-3" style={{ color: 'var(--text-1)' }}>Which IIT is Best for a Branch?</p>
         <div className="flex flex-wrap gap-3 mb-4">
@@ -99,7 +97,7 @@ export default function Branches() {
           </button>
         </div>
         {bestIITs.length > 0 && (
-          <div className="overflow-hidden rounded-xl border" style={{ borderColor: 'var(--border)' }}>
+          <div className="overflow-hidden rounded-xl" style={{ border: '1px solid var(--border)' }}>
             <table className="w-full text-sm theme-table">
               <thead>
                 <tr>
@@ -113,6 +111,26 @@ export default function Branches() {
                 {bestIITs.map((r, i) => (
                   <tr key={i}>
                     <td className="px-4 py-3">
-                      <span className="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold"
+                      <span
+                        className="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold"
                         style={{
-                   
+                          background: i === 0 ? 'linear-gradient(135deg,#F59E0B,#D97706)' : 'var(--input-bg)',
+                          color: i === 0 ? '#05091A' : 'var(--text-2)',
+                        }}
+                      >
+                        {i + 1}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 font-semibold" style={{ color: 'var(--text-1)' }}>{r.institute}</td>
+                    <td className="px-4 py-3 text-center font-bold" style={{ color: '#F59E0B' }}>{r.avg_package_lpa}</td>
+                    <td className="px-4 py-3 text-center font-semibold" style={{ color: '#60A5FA' }}>{r.placement_percentage ?? '—'}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}

@@ -3,11 +3,11 @@ import { getFilters, getTrends, getGrowthRates } from '../api/api'
 import Spinner from '../components/Spinner'
 import PageHeader from '../components/PageHeader'
 import {
-  LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid,
-  BarChart, Bar,
+  LineChart, Line, XAxis, YAxis, Tooltip, Legend,
+  ResponsiveContainer, CartesianGrid, BarChart, Bar,
 } from 'recharts'
 
-const tooltip = {
+const ttStyle = {
   contentStyle: { backgroundColor: 'var(--tooltip-bg)', border: '1px solid var(--border)', color: 'var(--text-1)', borderRadius: 10 },
   labelStyle: { color: 'var(--text-2)' },
 }
@@ -45,15 +45,14 @@ export default function Trends() {
   return (
     <div>
       <PageHeader
-        badge="📈 Historical Trends"
+        badge="Historical Trends"
         title="Trend Analysis"
         subtitle="Salary growth and placement trends over the years"
         accent="#34D399"
       />
 
-      {/* Section 1: Line chart */}
       <div className="theme-card p-5 mb-6">
-        <p className="font-semibold mb-3" style={{ color: 'var(--text-1)' }}>Package & Placement Trend</p>
+        <p className="font-semibold mb-3" style={{ color: 'var(--text-1)' }}>Package and Placement Trend</p>
         <div className="flex flex-wrap gap-3 mb-4">
           <select value={institute} onChange={e => setInstitute(e.target.value)} className="theme-select">
             {filters.institutes.map(i => <option key={i}>{i}</option>)}
@@ -72,18 +71,17 @@ export default function Trends() {
             <LineChart data={trendData}>
               <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" />
               <XAxis dataKey="year" tick={{ fill: 'var(--chart-text)' }} />
-              <YAxis yAxisId="left"  tick={{ fill: 'var(--chart-text)' }} />
+              <YAxis yAxisId="left" tick={{ fill: 'var(--chart-text)' }} />
               <YAxis yAxisId="right" orientation="right" tick={{ fill: 'var(--chart-text)' }} />
-              <Tooltip {...tooltip} />
+              <Tooltip {...ttStyle} />
               <Legend />
-              <Line yAxisId="left"  type="monotone" dataKey="avg_package_lpa"      stroke="#F59E0B" strokeWidth={2.5} dot={{ r: 4 }} name="Avg Package (LPA)" />
+              <Line yAxisId="left" type="monotone" dataKey="avg_package_lpa" stroke="#F59E0B" strokeWidth={2.5} dot={{ r: 4 }} name="Avg Package (LPA)" />
               <Line yAxisId="right" type="monotone" dataKey="placement_percentage" stroke="#60A5FA" strokeWidth={2.5} dot={{ r: 4 }} name="Placement %" />
             </LineChart>
           </ResponsiveContainer>
         )}
       </div>
 
-      {/* Section 2: Growth bar chart */}
       <div className="theme-card p-5">
         <p className="font-semibold mb-3" style={{ color: 'var(--text-1)' }}>Package Growth Rate Across IITs</p>
         <div className="flex flex-wrap gap-3 mb-4">
@@ -109,8 +107,21 @@ export default function Trends() {
         </div>
         {growthData.length === 0 && !loading && (
           <p className="text-sm mt-2" style={{ color: 'var(--text-2)' }}>
-            No data for this range. Try years where both have data (e.g. 2021–2024).
+            No data for this range. Try years where both have data (e.g. 2021-2024).
           </p>
         )}
         {growthData.length > 0 && (
-          <ResponsiveContainer width="100%" hei
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={growthData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" />
+              <XAxis dataKey="institute" tick={{ fill: 'var(--chart-text)', fontSize: 10 }} />
+              <YAxis tick={{ fill: 'var(--chart-text)' }} unit="%" />
+              <Tooltip {...ttStyle} formatter={v => v + '%'} />
+              <Bar dataKey="growth_pct" fill="#34D399" name="Growth %" radius={[6,6,0,0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
+      </div>
+    </div>
+  )
+}

@@ -96,4 +96,52 @@ html { scroll-behavior: smooth; }
 .stat-glow-amber  { text-shadow: 0 0 20px rgba(245,158,11,0.5); }
 .stat-glow-violet { text-shadow: 0 0 20px rgba(139,92,246,0.5); }
 .stat-glow-emerald{ text-shadow: 0 0 20px rgba(52,211,153,0.5); }
-.stat-glow-rose   { text-shadow: 0 0 20px rg
+.stat-glow-rose   { text-shadow: 0 0 20px rgba(251,113,133,0.5); }
+
+/* ── Card gradient border ────────────────────────────────────── */
+.card-gradient-border {
+  background: linear-gradient(var(--surface), var(--surface)) padding-box,
+              linear-gradient(135deg, rgba(245,158,11,0.4), rgba(99,102,241,0.2), transparent) border-box;
+  border: 1px solid transparent;
+}
+
+/* ── Ambient hero orbs ───────────────────────────────────────── */
+.hero-orb-1 {
+  position:absolute; width:500px; height:500px; border-radius:50%;
+  background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%);
+  pointer-events:none; animation: glowPulse 5s ease-in-out infinite;
+}
+.hero-orb-2 {
+  position:absolute; width:350px; height:350px; border-radius:50%;
+  background: radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%);
+  pointer-events:none; animation: glowPulse 7s ease-in-out infinite reverse;
+}
+
+/* ── Select / Input theme ────────────────────────────────────── */
+.theme-select {
+  background-color: var(--input-bg);
+  color: var(--select-text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.theme-select:focus { border-color: #F59E0B; }
+
+/* ── Theme-aware card ────────────────────────────────────────── */
+.theme-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  transition: background-color 0.3s ease;
+}
+
+/* ── Table ───────────────────────────────────────────────────── */
+.theme-table th { color: var(--text-2); background-color: var(--input-bg); }
+.theme-table tr { border-color: var(--border); }
+.theme-table td { color: var(--text-3); }
+
+@keyframes glowPulse { 0%,100% { opacity:0.4; } 50% { opacity:1; } }
+@keyframes fadeUp { 0% { opacity:0; transform:translateY(24px); } 100% { opacity:1; transform:translateY(0); } }
