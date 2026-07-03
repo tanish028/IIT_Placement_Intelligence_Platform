@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import { getFilters, getComparison } from '../api/api'
 import Spinner from '../components/Spinner'
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts'
+import PageHeader from '../components/PageHeader'
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 
-const card = { backgroundColor: '#1F2937' }
-const inner = { backgroundColor: '#111827' }
-const selectCls = "rounded-lg px-3 py-2 text-sm border border-gray-600 text-white"
+const tooltip = {
+  contentStyle: { backgroundColor: 'var(--tooltip-bg)', border: '1px solid var(--border)', color: 'var(--text-1)', borderRadius: 10 },
+  labelStyle: { color: 'var(--text-2)' },
+}
 
 export default function Compare() {
   const [filters, setFilters] = useState(null)
@@ -32,33 +34,47 @@ export default function Compare() {
 
   if (!filters) return <Spinner />
 
-  const tooltip = { contentStyle: { backgroundColor: '#1F2937', border: 'none', color: '#fff' } }
-
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white mb-1">IIT Comparison</h1>
-      <p className="text-gray-400 mb-6">Compare placement stats across multiple IITs</p>
+      <PageHeader
+        badge="⚖️ Side-by-Side"
+        title="IIT Comparison"
+        subtitle="Compare placement stats across multiple IITs for any year"
+      />
 
-      <div className="rounded-xl p-5 border border-gray-700 mb-6" style={card}>
+      {/* Filter card */}
+      <div className="theme-card p-5 mb-6">
+        <p className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: 'var(--text-2)' }}>
+          Select IITs to compare
+        </p>
         <div className="flex flex-wrap gap-2 mb-4">
           {filters.institutes.map(inst => (
-            <button key={inst} onClick={() => toggleInstitute(inst)}
-              className="px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
+            <button
+              key={inst}
+              onClick={() => toggleInstitute(inst)}
+              className="px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200"
               style={selected.includes(inst)
-                ? { backgroundColor: '#F59E0B', color: '#111827' }
-                : { backgroundColor: '#374151', color: '#d1d5db' }}>
+                ? { background: 'linear-gradient(135deg,#F59E0B,#D97706)', color: '#05091A', boxShadow: '0 4px 12px rgba(245,158,11,0.3)' }
+                : { backgroundColor: 'var(--input-bg)', color: 'var(--text-2)', border: '1px solid var(--border)' }
+              }
+            >
               {inst}
             </button>
           ))}
         </div>
         <div className="flex items-center gap-4">
-          <select value={year} onChange={e => setYear(e.target.value)}
-            className={selectCls} style={inner}>
+          <select
+            value={year}
+            onChange={e => setYear(e.target.value)}
+            className="theme-select"
+          >
             {filters.years.map(y => <option key={y}>{y}</option>)}
           </select>
-          <button onClick={handleCompare}
-            className="px-5 py-2 rounded-lg text-sm font-medium"
-            style={{ backgroundColor: '#F59E0B', color: '#111827' }}>
+          <button
+            onClick={handleCompare}
+            className="px-6 py-2 rounded-xl text-sm font-semibold transition-all duration-200 hover:opacity-90"
+            style={{ background: 'linear-gradient(135deg,#F59E0B,#D97706)', color: '#05091A', boxShadow: '0 4px 15px rgba(245,158,11,0.25)' }}
+          >
             Compare
           </button>
         </div>
@@ -68,36 +84,39 @@ export default function Compare() {
 
       {results.length > 0 && (
         <div className="space-y-6">
-          <div className="rounded-xl p-5 border border-gray-700" style={card}>
-            <h2 className="text-white font-semibold mb-4">Average Package (LPA)</h2>
+          {/* Avg Package Chart */}
+          <div className="theme-card p-5">
+            <p className="font-semibold mb-4" style={{ color: 'var(--text-1)' }}>Average Package (LPA)</p>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={results}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="institute" tick={{ fill: '#9ca3af', fontSize: 11 }} />
-                <YAxis tick={{ fill: '#9ca3af' }} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" />
+                <XAxis dataKey="institute" tick={{ fill: 'var(--chart-text)', fontSize: 11 }} />
+                <YAxis tick={{ fill: 'var(--chart-text)' }} />
                 <Tooltip {...tooltip} />
-                <Bar dataKey="avg_package_lpa" fill="#F59E0B" name="Avg Package (LPA)" radius={[4,4,0,0]} />
+                <Bar dataKey="avg_package_lpa" fill="#F59E0B" name="Avg Package (LPA)" radius={[6,6,0,0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="rounded-xl p-5 border border-gray-700" style={card}>
-            <h2 className="text-white font-semibold mb-4">Placement Percentage</h2>
+          {/* Placement % Chart */}
+          <div className="theme-card p-5">
+            <p className="font-semibold mb-4" style={{ color: 'var(--text-1)' }}>Placement Percentage</p>
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={results}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="institute" tick={{ fill: '#9ca3af', fontSize: 11 }} />
-                <YAxis tick={{ fill: '#9ca3af' }} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" />
+                <XAxis dataKey="institute" tick={{ fill: 'var(--chart-text)', fontSize: 11 }} />
+                <YAxis tick={{ fill: 'var(--chart-text)' }} />
                 <Tooltip {...tooltip} />
-                <Bar dataKey="placement_percentage" fill="#60A5FA" name="Placement %" radius={[4,4,0,0]} />
+                <Bar dataKey="placement_percentage" fill="#60A5FA" name="Placement %" radius={[6,6,0,0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="rounded-xl border border-gray-700 overflow-hidden" style={card}>
-            <table className="w-full text-sm">
-              <thead style={inner}>
-                <tr className="text-gray-400">
+          {/* Table */}
+          <div className="theme-card overflow-hidden">
+            <table className="w-full text-sm theme-table">
+              <thead>
+                <tr>
                   <th className="text-left px-4 py-3">Institute</th>
                   <th className="px-4 py-3">Avg Package</th>
                   <th className="px-4 py-3">Median Package</th>
@@ -107,19 +126,6 @@ export default function Compare() {
               </thead>
               <tbody>
                 {results.map((r, i) => (
-                  <tr key={i} className="border-t border-gray-700 text-gray-300">
-                    <td className="px-4 py-3 font-medium text-white">{r.institute}</td>
-                    <td className="px-4 py-3 text-center font-semibold" style={{ color: '#F59E0B' }}>{r.avg_package_lpa ?? '—'} LPA</td>
-                    <td className="px-4 py-3 text-center">{r.median_package_lpa ?? '—'} LPA</td>
-                    <td className="px-4 py-3 text-center">{r.highest_domestic_lpa ?? '—'} LPA</td>
-                    <td className="px-4 py-3 text-center" style={{ color: '#60A5FA' }}>{r.placement_percentage ?? '—'}%</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
+                  <tr key={i}>
+                    <td className="px-4 py-3 font-semibold" style={{ color: 'var(--text-1)' }}>{r.institute}</td>
+                    <td className="px-4 py-3 text-center font-bold" style={{ color: '#F59E0B' }}>

@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { useState } from 'react'
+import { ThemeProvider } from './context/ThemeContext'
 import Sidebar from './components/Sidebar'
 import Home from './pages/Home'
 import Compare from './pages/Compare'
@@ -7,7 +9,6 @@ import Sectors from './pages/Sectors'
 import Trends from './pages/Trends'
 import Predict from './pages/Predict'
 
-// Wrap each route in a keyed div so the fade-up animation re-triggers on navigation
 function AnimatedRoutes() {
   const location = useLocation()
   return (
@@ -23,14 +24,10 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
+  const [collapsed, setCollapsed] = useState(false)
+
   return (
-    <BrowserRouter>
-      <div className="flex min-h-screen">
-        <Sidebar />
-        <main className="flex-1 p-8 overflow-auto">
-          <AnimatedRoutes />
-        </main>
-      </div>
-    </BrowserRouter>
-  )
-}
+    <ThemeProvider>
+      <BrowserRouter>
+        <div className="flex min-h-screen">
+          <Sidebar collapsed={collapsed} onToggle={() => setCollapsed(c => !c

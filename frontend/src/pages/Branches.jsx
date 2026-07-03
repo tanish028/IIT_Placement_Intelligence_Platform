@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { getFilters, getBranchStats, getBestIITs } from '../api/api'
 import Spinner from '../components/Spinner'
+import PageHeader from '../components/PageHeader'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts'
 
-const card = { backgroundColor: '#1F2937' }
-const inner = { backgroundColor: '#111827' }
-const selectCls = "rounded-lg px-3 py-2 text-sm border border-gray-600 text-white"
-const tooltip = { contentStyle: { backgroundColor: '#1F2937', border: 'none', color: '#fff' } }
+const tooltip = {
+  contentStyle: { backgroundColor: 'var(--tooltip-bg)', border: '1px solid var(--border)', color: 'var(--text-1)', borderRadius: 10 },
+  labelStyle: { color: 'var(--text-2)' },
+}
 
 export default function Branches() {
   const [filters, setFilters] = useState(null)
@@ -40,52 +41,68 @@ export default function Branches() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-white mb-1">Branch Analytics</h1>
-      <p className="text-gray-400 mb-6">Explore placement stats by branch</p>
+      <PageHeader
+        badge="🌿 Branch Intelligence"
+        title="Branch Analytics"
+        subtitle="Explore placement stats by branch across IITs"
+        accent="#34D399"
+      />
 
-      <div className="rounded-xl p-5 border border-gray-700 mb-6" style={card}>
-        <h2 className="text-white font-semibold mb-3">Branch-wise Stats for an IIT</h2>
+      {/* Section 1: Branch-wise stats */}
+      <div className="theme-card p-5 mb-6">
+        <p className="font-semibold mb-3" style={{ color: 'var(--text-1)' }}>Branch-wise Stats for an IIT</p>
         <div className="flex flex-wrap gap-3 mb-4">
-          <select value={institute} onChange={e => setInstitute(e.target.value)} className={selectCls} style={inner}>
+          <select value={institute} onChange={e => setInstitute(e.target.value)} className="theme-select">
             {filters.institutes.map(i => <option key={i}>{i}</option>)}
           </select>
-          <select value={year} onChange={e => setYear(e.target.value)} className={selectCls} style={inner}>
+          <select value={year} onChange={e => setYear(e.target.value)} className="theme-select">
             {filters.years.map(y => <option key={y}>{y}</option>)}
           </select>
-          <button onClick={handleBranchStats} className="px-5 py-2 rounded-lg text-sm font-medium"
-            style={{ backgroundColor: '#F59E0B', color: '#111827' }}>Load</button>
+          <button
+            onClick={handleBranchStats}
+            className="px-5 py-2 rounded-xl text-sm font-semibold transition-all hover:opacity-90"
+            style={{ background: 'linear-gradient(135deg,#F59E0B,#D97706)', color: '#05091A', boxShadow: '0 4px 15px rgba(245,158,11,0.25)' }}
+          >
+            Load
+          </button>
         </div>
         {loading && <Spinner />}
         {branchData.length > 0 && (
           <ResponsiveContainer width="100%" height={320}>
             <BarChart data={branchData} layout="vertical">
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-              <XAxis type="number" tick={{ fill: '#9ca3af' }} />
-              <YAxis dataKey="branch" type="category" tick={{ fill: '#9ca3af', fontSize: 11 }} width={90} />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" />
+              <XAxis type="number" tick={{ fill: 'var(--chart-text)' }} />
+              <YAxis dataKey="branch" type="category" tick={{ fill: 'var(--chart-text)', fontSize: 11 }} width={100} />
               <Tooltip {...tooltip} />
-              <Bar dataKey="avg_package_lpa" fill="#F59E0B" name="Avg Package (LPA)" radius={[0,4,4,0]} />
+              <Bar dataKey="avg_package_lpa" fill="#F59E0B" name="Avg Package (LPA)" radius={[0,6,6,0]} />
             </BarChart>
           </ResponsiveContainer>
         )}
       </div>
 
-      <div className="rounded-xl p-5 border border-gray-700" style={card}>
-        <h2 className="text-white font-semibold mb-3">Which IIT is Best for a Branch?</h2>
+      {/* Section 2: Best IITs for a branch */}
+      <div className="theme-card p-5">
+        <p className="font-semibold mb-3" style={{ color: 'var(--text-1)' }}>Which IIT is Best for a Branch?</p>
         <div className="flex flex-wrap gap-3 mb-4">
-          <select value={branch} onChange={e => setBranch(e.target.value)} className={selectCls} style={inner}>
+          <select value={branch} onChange={e => setBranch(e.target.value)} className="theme-select">
             {filters.branches.map(b => <option key={b}>{b}</option>)}
           </select>
-          <select value={year} onChange={e => setYear(e.target.value)} className={selectCls} style={inner}>
+          <select value={year} onChange={e => setYear(e.target.value)} className="theme-select">
             {filters.years.map(y => <option key={y}>{y}</option>)}
           </select>
-          <button onClick={handleBestIITs} className="px-5 py-2 rounded-lg text-sm font-medium"
-            style={{ backgroundColor: '#60A5FA', color: '#111827' }}>Rank IITs</button>
+          <button
+            onClick={handleBestIITs}
+            className="px-5 py-2 rounded-xl text-sm font-semibold transition-all hover:opacity-90"
+            style={{ background: 'linear-gradient(135deg,#60A5FA,#3B82F6)', color: '#05091A', boxShadow: '0 4px 15px rgba(96,165,250,0.25)' }}
+          >
+            Rank IITs
+          </button>
         </div>
         {bestIITs.length > 0 && (
-          <div className="overflow-hidden rounded-lg border border-gray-700">
-            <table className="w-full text-sm">
-              <thead style={inner}>
-                <tr className="text-gray-400">
+          <div className="overflow-hidden rounded-xl border" style={{ borderColor: 'var(--border)' }}>
+            <table className="w-full text-sm theme-table">
+              <thead>
+                <tr>
                   <th className="text-left px-4 py-3">Rank</th>
                   <th className="text-left px-4 py-3">Institute</th>
                   <th className="px-4 py-3">Avg Package (LPA)</th>
@@ -94,18 +111,8 @@ export default function Branches() {
               </thead>
               <tbody>
                 {bestIITs.map((r, i) => (
-                  <tr key={i} className="border-t border-gray-700 text-gray-300">
-                    <td className="px-4 py-3 text-gray-500">#{i + 1}</td>
-                    <td className="px-4 py-3 font-medium text-white">{r.institute}</td>
-                    <td className="px-4 py-3 text-center font-semibold" style={{ color: '#F59E0B' }}>{r.avg_package_lpa}</td>
-                    <td className="px-4 py-3 text-center" style={{ color: '#60A5FA' }}>{r.placement_percentage ?? '—'}%</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
+                  <tr key={i}>
+                    <td className="px-4 py-3">
+                      <span className="inline-flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold"
+                        style={{
+                   
